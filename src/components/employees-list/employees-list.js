@@ -3,7 +3,7 @@ import EmployeesListItem from '../employees-list-item/employees-list-item';
 
 
 
-const EmployeesList = ({data}) => {
+const EmployeesList = ({data, onDelete}) => {
 
     const elements = data.map(item => {
         const {id, ...itemProps} = item; //остаточный принцип. Сначала в item ищется id и записывается в переменную id
@@ -12,7 +12,10 @@ const EmployeesList = ({data}) => {
         return (
             //<EmployeesListItem name = {item.name} salary={item.salary}/>
             //<EmployeesListItem {...item}/>  //спред-оператор идентичен строке выше
-            <EmployeesListItem key={id}  {...itemProps}/>
+            <EmployeesListItem key={id}
+                              {...itemProps}
+                              onDelete={() => onDelete(id)}
+                              />
         )
     })
 
