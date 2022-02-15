@@ -41,14 +41,15 @@ class App extends Component {
         super(props)
         this.state = {
             data: [
-                    {name: 'Vasya', salary: 800, increase: false, id: 1},
-                    {name: 'Petya', salary: 1800, increase: true, id: 2},
-                    {name: 'Kolya', salary: 2500, increase: false, id: 3}
+                    {name: 'Vasya', salary: 800, increase: false, rise: true, id: 1},
+                    {name: 'Petya', salary: 1800, increase: true, rise: false, id: 2},
+                    {name: 'Kolya', salary: 2500, increase: false, rise: false, id: 3}
                 ]
         }
         this.maxId = 4;
     }
 
+    //добавление в data из state нового сотрудника
     addItem = (name, salary) => {
         const employee = {
             name: name,
@@ -57,9 +58,9 @@ class App extends Component {
             id: this.maxId++
         }
         this.setState(({data}) => {
-            const newArr = [...this.state.data, employee];
+            const newData = [...this.state.data, employee];//оператор расширения в данном случае
             return {
-                data: newArr
+                data: newData
             }
         })
     }
@@ -82,17 +83,51 @@ class App extends Component {
         })
     }
 
+    onToggleIncrease = (id) => {
+        //первый вариант
+        // this.setState(({data}) => {
+        //     const index = data.findIndex(elem => elem.id === id);//найдем index по id
+        //     const old = data[index]; //получим старый найденный элемент по индексу
+        //     const newItem = {...old, increase: !old.increase};  //создадим копию старого элемента с заменой значения под ключом increase
+        //     const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)] //создадим новый массив, аналогичный data
+        //     return {
+        //         data: newArr
+        //     }
+        // })
+
+        //второй вариант
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if (item.id === id) {
+                    return {...item, increase: !item.increase} //вернем новый объект на основе старого из data с заменой значения под ключом increase
+                }
+                return item;
+            })
+        }))
+    }
+
+    onToggleRise = (id) => {
+        console.log(`Rise ${id}`);
+    }
+
+    getNumRiseEmployees = ({data}) => {
+
+    }
+
     render() {
            return (
                 <div className="app">
-                    <AppInfo/>
+                    <AppInfo numEmployees={this.state.data.length}
+                             numRiseEmployees={(data) => data.filter(item => item.rise).length}/>
                     
                     <div className="search-panel">
                         <AppFilter/>
                         <SearchPanel/>
                     </div>
                     <EmployeesList data = {this.state.data}
-                                   onDelete={this.deleteItem}/>
+                                   onDelete={this.deleteItem}
+                                   onToggleIncrease={this.onToggleIncrease}
+                                   onToggleRise={this.onToggleRise}/>
                     <EmployeesAddForm onAdd={this.addItem}/>
                 </div>
         ); 
