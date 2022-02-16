@@ -3,7 +3,7 @@ import EmployeesListItem from '../employees-list-item/employees-list-item';
 
 
 
-const EmployeesList = ({data, onDelete, onToggleIncrease, onToggleRise}) => {
+const EmployeesList = ({data, onDelete, onToggleProp}) => {
 
     const elements = data.map(item => {
         const {id, ...itemProps} = item; //остаточный принцип. Сначала в item ищется id и записывается в переменную id
@@ -15,8 +15,7 @@ const EmployeesList = ({data, onDelete, onToggleIncrease, onToggleRise}) => {
             <EmployeesListItem key={id}
                               {...itemProps}
                               onDelete={() => onDelete(id)}
-                              onToggleIncrease={() => onToggleIncrease(id)}
-                              onToggleRise={() => onToggleRise(id)}
+                              onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute("data-toggle"))}
                               />
         )
     })

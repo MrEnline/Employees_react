@@ -83,34 +83,47 @@ class App extends Component {
         })
     }
 
-    onToggleIncrease = (id) => {
-        //первый вариант
-        // this.setState(({data}) => {
-        //     const index = data.findIndex(elem => elem.id === id);//найдем index по id
-        //     const old = data[index]; //получим старый найденный элемент по индексу
-        //     const newItem = {...old, increase: !old.increase};  //создадим копию старого элемента с заменой значения под ключом increase
-        //     const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)] //создадим новый массив, аналогичный data
-        //     return {
-        //         data: newArr
-        //     }
-        // })
+    // onToggleIncrease = (id) => {
+    //     //первый вариант
+    //     // this.setState(({data}) => {
+    //     //     const index = data.findIndex(elem => elem.id === id);//найдем index по id
+    //     //     const old = data[index]; //получим старый найденный элемент по индексу
+    //     //     const newItem = {...old, increase: !old.increase};  //создадим копию старого элемента с заменой значения под ключом increase
+    //     //     const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)] //создадим новый массив, аналогичный data
+    //     //     return {
+    //     //         data: newArr
+    //     //     }
+    //     // })
 
-        //второй вариант
+    //     //второй вариант
+    //     this.setState(({data}) => ({
+    //         data: data.map(item => {
+    //             if (item.id === id) {
+    //                 return {...item, increase: !item.increase} //вернем новый объект на основе старого из data с заменой значения под ключом increase
+    //             }
+    //             return item;
+    //         })
+    //     }))
+    // }
+
+    // onToggleRise = (id) => {
+    //     this.setState(({data}) => ({
+    //         data: data.map(item => {
+    //             if (item.id === id) {
+    //                 return {...item, rise: !item.rise} //вернем новый объект на основе старого из data с заменой значения под ключом increase
+    //             }
+    //             return item;
+    //         })
+    //     }))
+    // }
+
+    //реализуем один общий метод для методов onToggleIncrease и onToggleRise
+    //prop - изменяемая часть(в нашем случае это либо rise, либо increase)
+    onToggleProp = (id, prop) => {
         this.setState(({data}) => ({
             data: data.map(item => {
                 if (item.id === id) {
-                    return {...item, increase: !item.increase} //вернем новый объект на основе старого из data с заменой значения под ключом increase
-                }
-                return item;
-            })
-        }))
-    }
-
-    onToggleRise = (id) => {
-        this.setState(({data}) => ({
-            data: data.map(item => {
-                if (item.id === id) {
-                    return {...item, rise: !item.rise} //вернем новый объект на основе старого из data с заменой значения под ключом increase
+                    return {...item, [prop]: !item[prop]} //вернем новый объект на основе старого из data с заменой значения под ключом increase
                 }
                 return item;
             })
@@ -131,8 +144,7 @@ class App extends Component {
 
                 <EmployeesList data = {this.state.data}
                                 onDelete={this.deleteItem}
-                                onToggleIncrease={this.onToggleIncrease}
-                                onToggleRise={this.onToggleRise}/>
+                                onToggleProp={this.onToggleProp}/>
 
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
