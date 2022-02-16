@@ -44,7 +44,9 @@ class App extends Component {
                     {name: 'Vasya', salary: 800, increase: false, rise: true, id: 1},
                     {name: 'Petya', salary: 1800, increase: true, rise: false, id: 2},
                     {name: 'Kolya', salary: 2500, increase: false, rise: true, id: 3}
-                ]
+                ],
+            term: "",
+            filter: ""
         }
         this.maxId = 4;
     }
@@ -119,6 +121,7 @@ class App extends Component {
 
     //реализуем один общий метод для методов onToggleIncrease и onToggleRise
     //prop - изменяемая часть(в нашем случае это либо rise, либо increase)
+    //здесь также используется подъем состояния из дочерних элементов к родителю
     onToggleProp = (id, prop) => {
         this.setState(({data}) => ({
             data: data.map(item => {
@@ -130,21 +133,60 @@ class App extends Component {
         }))
     }
 
+    searchEmp = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+        
+        return items.filter((item) => {
+            return item.name.indexOf(term) > -1;
+        })
+    }
+
+    filterEmp = (items, filter) => {
+        if (filter === "increase") {
+            return items.filter((item) => {
+                return item.increase;
+            })
+        }
+
+        if (filter === "salaryUp1000") {
+            return items.filter((item) => {
+                return item.salary > 1000;
+            })
+        }
+
+        return items;
+    }
+
+    //данную функцию будем передавать в search-panel.js и там вызывать и оттуда же передавать параметр term
+    //который в свою очередь будет выставлять значение term в этом модуле
+    onUpdateSearch = (term) => {
+        this.setState({term}); //Эквивалент this.setState({term:term});
+    }
+
+    onUpdateFilter = (filter) => {
+        this.setState({filter})
+    }
+
     render() {
+        const {data, term} = this.state;
         const employees =  this.state.data.length;
         const increased =  this.state.data.filter(item => item.increase).length;
+        const visibleData = this.filterEmp(this.searchEmp(data, term), this.state.filter);
+        
         return (
             <div className="app">
                 <AppInfo employees={employees} increased={increased}/>
                 
                 <div className="search-panel">
-                    <AppFilter/>
-                    <SearchPanel/>
+                    <AppFilter onUpdateFilter={this.onUpdateFilter}/>
+                    <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
                 </div>
 
-                <EmployeesList data = {this.state.data}
-                                onDelete={this.deleteItem}
-                                onToggleProp={this.onToggleProp}/>
+                <EmployeesList data={visibleData}
+                               onDelete={this.deleteItem}
+                               onToggleProp={this.onToggleProp}/>
 
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
