@@ -46,7 +46,7 @@ class App extends Component {
                     {name: 'Kolya', salary: 2500, increase: false, rise: true, id: 3}
                 ],
             term: "",
-            filter: ""
+            filter: "all" //установим по умолчанию "Все сотрудники"
         }
         this.maxId = 4;
     }
@@ -143,20 +143,29 @@ class App extends Component {
         })
     }
 
-    filterEmp = (items, filter) => {
-        if (filter === "increase") {
-            return items.filter((item) => {
-                return item.increase;
-            })
-        }
+    filterPost = (items, filter) => {
+        //мой вариант
+        // if (filter === "rise") {
+        //     return items.filter((item) => {
+        //         return item.rise;
+        //     })
+        // }
+        // if (filter === "moreThen1000") {
+        //     return items.filter((item) => {
+        //         return item.salary > 1000;
+        //     })
+        // }
+        // return items;
 
-        if (filter === "salaryUp1000") {
-            return items.filter((item) => {
-                return item.salary > 1000;
-            })
+        //второй вариант
+        switch (filter) {
+            case "rise":
+                return items.filter(item => item.rise);
+            case "moreThen1000":
+                return items.filter(item => item.salary > 1000);
+            default:
+                return items;         
         }
-
-        return items;
     }
 
     //данную функцию будем передавать в search-panel.js и там вызывать и оттуда же передавать параметр term
@@ -165,22 +174,22 @@ class App extends Component {
         this.setState({term}); //Эквивалент this.setState({term:term});
     }
 
-    onUpdateFilter = (filter) => {
+    onFilterSelect = (filter) => {
         this.setState({filter})
     }
 
     render() {
-        const {data, term} = this.state;
+        const {data, term, filter} = this.state;
         const employees =  this.state.data.length;
         const increased =  this.state.data.filter(item => item.increase).length;
-        const visibleData = this.filterEmp(this.searchEmp(data, term), this.state.filter);
+        const visibleData = this.filterPost(this.searchEmp(data, term), filter);
         
         return (
             <div className="app">
                 <AppInfo employees={employees} increased={increased}/>
                 
                 <div className="search-panel">
-                    <AppFilter onUpdateFilter={this.onUpdateFilter}/>
+                    <AppFilter filter={filter} onFilterSelect={this.onFilterSelect}/>
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
                 </div>
 
