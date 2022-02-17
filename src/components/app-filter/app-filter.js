@@ -4,14 +4,16 @@ import "./app-filter.css";
 
 const AppFilter = (props) => {
 
+    //данные для кнопок
     const buttonsData = [
       {name: "all", label: "Все сотрудники"},
       {name: "rise", label: "На повышение"},
       {name: "moreThen1000", label: "З/П выше 1000$"},  
     ];
 
+    //сформируем массив верстки для каждой кнопки
     const buttons = buttonsData.map(({name, label}) => {
-        const active = props.filter === name;
+        const active = props.filter === name;   //в зависимости от того какое значние приходит от родителя
         const clazz = active ? "btn-light" : "btn-outline-light"
         //  !!! ВАЖНО !!!
         //onClick={() => props.onFilterSelect(name)}> если надо передать параметр, 
@@ -26,9 +28,10 @@ const AppFilter = (props) => {
         )
     })
 
+    //сформируем верстку с кнопками
     return (
         <div className="btn-group">
-            {buttons}
+            {buttons}   
             {/* <button className="btn btn-light"
                     type="button">
                     Все сотрудники        

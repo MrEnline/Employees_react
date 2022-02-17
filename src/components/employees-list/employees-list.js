@@ -8,7 +8,6 @@ const EmployeesList = ({data, onDelete, onToggleProp}) => {
     const elements = data.map(item => {
         const {id, ...itemProps} = item; //остаточный принцип. Сначала в item ищется id и записывается в переменную id
                                         // затем все остальные значения переменных записываются в itemProps
-
         return (
             //<EmployeesListItem name = {item.name} salary={item.salary}/>
             //<EmployeesListItem {...item}/>  //спред-оператор идентичен строке выше
