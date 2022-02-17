@@ -6,15 +6,17 @@ const AppFilter = (props) => {
 
     //данные для кнопок
     const buttonsData = [
-      {name: "all", label: "Все сотрудники"},
-      {name: "rise", label: "На повышение"},
-      {name: "moreThen1000", label: "З/П выше 1000$"},  
+      {name: "all", label: "Все сотрудники", colored: false},
+      {name: "rise", label: "На повышение", colored: false},
+      {name: "moreThen1000", label: "З/П выше 1000$", colored: true},  
     ];
 
     //сформируем массив верстки для каждой кнопки
-    const buttons = buttonsData.map(({name, label}) => {
+    const buttons = buttonsData.map(({name, label, colored}) => {
         const active = props.filter === name;   //в зависимости от того какое значние приходит от родителя
         const clazz = active ? "btn-light" : "btn-outline-light"
+        const style = colored ? {color: 'red'} : null;
+
         //  !!! ВАЖНО !!!
         //onClick={() => props.onFilterSelect(name)}> если надо передать параметр, 
         //то вызываем функцию onFilterSelect с параметром name через стрелочную
@@ -22,7 +24,8 @@ const AppFilter = (props) => {
             <button className={`btn ${clazz}`}
                     type="button"
                     key={name}
-                    onClick={() => props.onFilterSelect(name)}>
+                    onClick={() => props.onFilterSelect(name)}
+                    style={style}>
                     {label}       
             </button>
         )
