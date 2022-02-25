@@ -34,6 +34,7 @@ class EmployeesAddForm extends Component {
         }  
     }
 
+    //т.к. инпутов 2, то можно сделать для них один метод с помощью аттрибута name в каждом из них 
     onValueChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value
@@ -41,7 +42,7 @@ class EmployeesAddForm extends Component {
     }
 
     onSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); //отмена в форме
         // Можно еще и сообщения добавлять, подсветку, атрибуты minlength и тд.
         if (this.state.name.length < 3 || !this.state.salary) return;
         this.props.onAdd(this.state.name, this.state.salary)

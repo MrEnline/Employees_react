@@ -52,6 +52,7 @@ class App extends Component {
     }
 
     //добавление в data из state нового сотрудника
+    //после этого метода, который изменяет словарь data, вызовется метод render(), который перерисует EmployeesList
     addItem = (name, salary) => {
         const employee = {
             name: name,
@@ -133,6 +134,7 @@ class App extends Component {
         }))
     }
 
+    //формируем новый список сотрудников на основе введенного имени в поиске
     searchEmp = (items, term) => {
         if (term.length === 0) {
             return items;
@@ -143,21 +145,8 @@ class App extends Component {
         })
     }
 
+    //формируем новый список сотрудников на основе фильтров-кнопок
     filterPost = (items, filter) => {
-        //мой вариант
-        // if (filter === "rise") {
-        //     return items.filter((item) => {
-        //         return item.rise;
-        //     })
-        // }
-        // if (filter === "moreThen1000") {
-        //     return items.filter((item) => {
-        //         return item.salary > 1000;
-        //     })
-        // }
-        // return items;
-
-        //второй вариант
         switch (filter) {
             case "rise":
                 return items.filter(item => item.rise);

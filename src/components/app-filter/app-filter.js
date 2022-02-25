@@ -4,14 +4,15 @@ import "./app-filter.css";
 
 const AppFilter = (props) => {
 
-    //данные для кнопок
+    //если данные кнопок разные, то добавим их в массив со словарем
+    //данная структура удобна в плане добавления новых одинаковых кнопок
     const buttonsData = [
       {name: "all", label: "Все сотрудники", colored: false},
       {name: "rise", label: "На повышение", colored: false},
       {name: "moreThen1000", label: "З/П выше 1000$", colored: true},  
     ];
 
-    //сформируем массив верстки для каждой кнопки
+    //сформируем новый массив верстки для каждой кнопки на основе данных, пришедших из app.js
     const buttons = buttonsData.map(({name, label, colored}) => {
         const active = props.filter === name;   //в зависимости от того какое значние приходит от родителя
         const clazz = active ? "btn-light" : "btn-outline-light"
